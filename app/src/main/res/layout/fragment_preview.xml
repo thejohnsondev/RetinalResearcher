@@ -6,13 +6,17 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".view.preview.PreviewFragment">
 
-    <TextView
-        android:id="@+id/test"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <jp.co.cyberagent.android.gpuimage.GPUImageView
+        android:id="@+id/realtimePreview"
+        android:layout_width="@dimen/gap_0dp"
+        android:layout_height="@dimen/gap_0dp"
+        android:layout_margin="@dimen/gap_16dp"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:gpuimage_surface_type="texture_view"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        />
+        app:layout_constraintEnd_toEndOf="parent"/>
+
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
