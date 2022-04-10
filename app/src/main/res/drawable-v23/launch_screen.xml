@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@drawable/splash_bg"/>
+
+    <item android:gravity="center"
+        android:width="@dimen/gap_144dp"
+        android:height="@dimen/gap_144dp"
+        android:drawable="@drawable/ic_app_icon_144">
+    </item>
+
+    <item android:gravity="center_horizontal|bottom"
+        android:width="@dimen/gap_144dp"
+        android:drawable="@drawable/ic_made_by">
+    </item>
+</layer-list>

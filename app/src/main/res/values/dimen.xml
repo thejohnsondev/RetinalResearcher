@@ -12,7 +12,9 @@
     <dimen name="gap_4dp">4dp</dimen>
     <dimen name="gap_8dp">8dp</dimen>
     <dimen name="gap_16dp">16dp</dimen>
+    <dimen name="gap_24dp">24dp</dimen>
     <dimen name="gap_32dp">32dp</dimen>
     <dimen name="gap_64dp">64dp</dimen>
     <dimen name="gap_128dp">128dp</dimen>
+    <dimen name="gap_144dp">144dp</dimen>
 </resources>

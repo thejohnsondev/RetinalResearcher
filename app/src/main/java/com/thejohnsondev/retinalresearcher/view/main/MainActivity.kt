@@ -11,6 +11,7 @@ class MainActivity : AppCompatActivity() {
     private var navController: NavController? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_RetinalResearcher)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initViews()
