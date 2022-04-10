@@ -1,22 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/rr_blue"
     tools:context=".view.preview.PreviewFragment">
 
+    <androidx.appcompat.widget.AppCompatImageView
+        android:layout_width="@dimen/gap_128dp"
+        android:layout_height="?actionBarSize"
+        app:layout_constraintBottom_toBottomOf="@id/preview_toolbar"
+        app:layout_constraintEnd_toEndOf="@+id/preview_toolbar"
+        app:layout_constraintStart_toStartOf="@+id/preview_toolbar"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_rr_logo_light" />
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/preview_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+
     <jp.co.cyberagent.android.gpuimage.GPUImageView
-        android:id="@+id/realtimePreview"
+        android:id="@+id/realtime_preview"
         android:layout_width="@dimen/gap_0dp"
         android:layout_height="@dimen/gap_0dp"
-        android:layout_margin="@dimen/gap_16dp"
-        app:layout_constraintDimensionRatio="H,1:1"
+        android:layout_margin="@dimen/gap_8dp"
         app:gpuimage_surface_type="texture_view"
-        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="H,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@id/preview_toolbar" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center_horizontal"
+        android:text="@string/label_preview"
+        android:textColor="@color/rr_blue_lighter"
+        app:layout_constraintBottom_toTopOf="@+id/bottom_action_frame"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/realtime_preview" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/bottom_action_frame"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/gap_0dp"
+        android:layout_marginTop="@dimen/gap_32dp"
+        android:background="@drawable/bg_round_top_corners"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/realtime_preview">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/center_divider"
+            android:layout_width="@dimen/gap_64dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/hide_dialog_action_bar" />
+
+        <include
+            android:id="@+id/actions_layout"
+            layout="@layout/actions_layout"
+            app:layout_constraintTop_toBottomOf="@id/center_divider"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

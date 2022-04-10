@@ -1,3 +1,21 @@
 <resources>
-    <string name="app_name">RetinalResearcher</string>
+
+    <!-- app -->
+    <string name="app_name">Retina Researcher</string>
+
+    <!-- preview -->
+    <string name="label_preview">Preview</string>
+
+    <!-- actions -->
+    <string name="label_filter">Filter</string>
+    <string name="label_contrast">Contrast</string>
+    <string name="label_brightness">Brightness</string>
+    <string name="label_rgb">RGB filter</string>
+    <string name="label_gray_scale">Gray Scale</string>
+
+    <!-- rgb filter   -->
+    <string name="red">RED</string>
+    <string name="green">GREEN</string>
+    <string name="blue">BLUE</string>
+
 </resources>

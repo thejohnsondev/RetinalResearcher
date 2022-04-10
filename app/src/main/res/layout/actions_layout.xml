@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/camera_shot_btn"
+        android:layout_width="@dimen/gap_64dp"
+        android:layout_height="@dimen/gap_64dp"
+        android:layout_marginBottom="@dimen/gap_32dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:srcCompat="@drawable/ic_camera_shot" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/label_filter"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/gap_16dp"
+        android:layout_marginTop="@dimen/gap_16dp"
+        android:fontFamily="sans-serif-medium"
+        android:text="@string/label_filter"
+        android:textColor="@color/rr_blue"
+        android:textSize="@dimen/gap_28sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ToggleButton
+        android:id="@+id/toggle_contrast"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/gap_32dp"
+        android:layout_marginStart="@dimen/gap_16dp"
+        android:layout_marginTop="@dimen/gap_8dp"
+        android:background="@drawable/toggle_btn_selector"
+        android:button="@drawable/toggle_btn_selector"
+        android:textOff="@string/label_contrast"
+        android:textOn="@string/label_contrast"
+        android:textSize="@dimen/gap_12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/label_filter" />
+
+    <ToggleButton
+        android:id="@+id/toggle_brightness"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/gap_32dp"
+        android:layout_marginStart="@dimen/gap_16dp"
+        android:layout_marginTop="@dimen/gap_8dp"
+        android:background="@drawable/toggle_btn_selector"
+        android:button="@drawable/toggle_btn_selector"
+        android:textOff="@string/label_brightness"
+        android:textOn="@string/label_brightness"
+        android:textSize="@dimen/gap_12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggle_contrast" />
+
+    <ToggleButton
+        android:id="@+id/toggle_rgb"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/gap_32dp"
+        android:layout_marginStart="@dimen/gap_16dp"
+        android:layout_marginTop="@dimen/gap_8dp"
+        android:background="@drawable/toggle_btn_selector"
+        android:button="@drawable/toggle_btn_selector"
+        android:textOff="@string/label_rgb"
+        android:textOn="@string/label_rgb"
+        android:textSize="@dimen/gap_12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggle_brightness" />
+
+    <ToggleButton
+        android:id="@+id/toggle_gary_scale"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/gap_32dp"
+        android:layout_marginStart="@dimen/gap_16dp"
+        android:layout_marginTop="@dimen/gap_8dp"
+        android:background="@drawable/toggle_btn_selector"
+        android:button="@drawable/toggle_btn_selector"
+        android:textOff="@string/label_gray_scale"
+        android:textOn="@string/label_gray_scale"
+        android:textSize="@dimen/gap_12sp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toggle_rgb" />
+
+    <View
+        android:id="@+id/divider"
+        android:layout_width="@dimen/gap_0dp"
+        android:layout_height="@dimen/gap_0dp"
+        android:background="?android:attr/listDivider"
+        app:layout_constraintBottom_toBottomOf="@id/toggle_rgb"
+        app:layout_constraintStart_toEndOf="@+id/toggle_brightness"
+        app:layout_constraintTop_toTopOf="@id/toggle_contrast" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/contrast_seek_bar"
+        android:layout_width="@dimen/gap_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/gap_4dp"
+        android:layout_marginEnd="@dimen/gap_16dp"
+        android:progressBackgroundTint="@color/rr_red_dark"
+        android:progressTint="@color/rr_red_light"
+        android:thumbTint="@color/rr_red"
+        app:layout_constraintBottom_toBottomOf="@id/toggle_contrast"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="@id/toggle_contrast" />
+
+    <androidx.appcompat.widget.AppCompatSeekBar
+        android:id="@+id/brightness_seek_bar"
+        android:layout_width="@dimen/gap_0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="@dimen/gap_4dp"
+        android:layout_marginEnd="@dimen/gap_16dp"
+        android:progressBackgroundTint="@color/rr_red_dark"
+        android:progressTint="@color/rr_red_light"
+        android:thumbTint="@color/rr_red"
+        app:layout_constraintBottom_toBottomOf="@id/toggle_brightness"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/divider"
+        app:layout_constraintTop_toTopOf="@id/toggle_brightness" />
+
+    <LinearLayout
+        android:layout_width="@dimen/gap_0dp"
+        android:layout_height="@dimen/gap_0dp"
+        android:layout_marginEnd="@dimen/gap_16dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@id/toggle_rgb"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/divider"
+        app:layout_constraintTop_toTopOf="@id/toggle_rgb">
+
+        <TextView
+            android:id="@+id/rgb_selection_red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/gap_8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_red"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="@dimen/gap_16dp"
+            android:paddingVertical="@dimen/gap_2dp"
+            android:text="@string/red"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/rgb_selection_green"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/gap_8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_green"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="@dimen/gap_16dp"
+            android:paddingVertical="@dimen/gap_2dp"
+            android:text="@string/green"
+            android:textColor="@color/white" />
+
+        <TextView
+            android:id="@+id/rgb_selection_blue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginHorizontal="@dimen/gap_8dp"
+            android:layout_weight="1"
+            android:background="@drawable/bg_btn_blue"
+            android:gravity="center_horizontal"
+            android:paddingHorizontal="@dimen/gap_16dp"
+            android:paddingVertical="@dimen/gap_2dp"
+            android:text="@string/blue"
+            android:textColor="@color/white" />
+
+    </LinearLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

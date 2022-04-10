@@ -7,4 +7,21 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+
+                <!-- rr palette -->
+
+    <color name="rr_light_green">#D3ECA7</color>
+    <color name="rr_green">#A1B57D</color>
+    <color name="rr_red">#B33030</color>
+    <color name="rr_blue">#19252F</color>
+
+    <color name="rr_blue_light">#1E3142</color>
+    <color name="rr_blue_lighter">#3E607C</color>
+    <color name="rr_red_light">#E45151</color>
+    <color name="rr_red_dark">#3C0E0E</color>
+
+    <color name="rgb_red">#E45151</color>
+    <color name="rgb_green">#57D820</color>
+    <color name="rgb_blue">#2038B3</color>
+
 </resources>
