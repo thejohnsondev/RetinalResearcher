@@ -5,6 +5,8 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
 import android.os.Build
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.widget.SeekBar
 import androidx.camera.core.CameraSelector
 import androidx.camera.core.ImageAnalysis
@@ -26,6 +28,8 @@ import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.CONTRAST_MAX
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.CONTRAST_MIN
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.CONTRAST_VALUE_DIVIDEND
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.REQUEST_CODE_PERMISSION
+import com.thejohnsondev.retinalresearcher.util.Saved
+import com.thejohnsondev.retinalresearcher.util.Saving
 import com.thejohnsondev.retinalresearcher.util.Util.getAppComponent
 import com.thejohnsondev.retinalresearcher.util.YuvToRgbConverter
 import com.thejohnsondev.retinalresearcher.util.base.BaseFragment
@@ -131,6 +135,8 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
 
     override fun initListenersAndObservers() {
         initFilterOptionListener()
+        initCaptureBtnListener();
+        initSaveStateObserver();
     }
 
     private fun initFilterOptionListener() {
@@ -140,7 +146,28 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
         })
     }
 
+    private fun initCaptureBtnListener() {
+        binding.actionsLayout.cameraShotBtn.setOnClickListener {
+            saveCapture()
+        }
+    }
 
+    private fun initSaveStateObserver() {
+        viewModel.saveState.observe(viewLifecycleOwner, { state ->
+            when(state) {
+                is Saving -> {
+                    binding.saveStateFrame.visibility = VISIBLE
+                    binding.tvSaveState.text = getString(R.string.state_saving)
+                }
+                is Saved -> {
+                    binding.saveStateFrame.visibility = GONE
+                    binding.tvSaveState.text = getString(R.string.state_saved)
+                }
+            }
+        })
+    }
+
+    @SuppressLint("UnsafeOptInUsageError")
     private fun initPreview() {
         binding.realtimePreview.apply {
             rotation = BASE_PREVIEW_ROTATION
@@ -152,11 +179,15 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
         }, ContextCompat.getMainExecutor(requireContext()))
     }
 
+    private fun saveCapture() {
+        viewModel.saveImage(binding.realtimePreview, requireContext(), getString(R.string.app_name))
+    }
+
     @SuppressLint("UnsafeOptInUsageError")
     private fun startCameraIfReady() {
         if (!viewModel.isPermissionGranted(requireContext())) return
         imageAnalysis.setAnalyzer(cameraExecutor, {
-            var bitmap = allocateBitmapIfNecessary(it.width, it.height)
+            val bitmap = allocateBitmapIfNecessary(it.width, it.height)
             rgbConverter.yuvToRgb(requireContext(), it.image!!, bitmap)
             it.close()
             binding.realtimePreview.post {

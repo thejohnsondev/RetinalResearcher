@@ -18,4 +18,8 @@
     <string name="green">GREEN</string>
     <string name="blue">BLUE</string>
 
+    <!-- save state -->
+    <string name="state_saving">Saving</string>
+    <string name="state_saved">Saved</string>
+
 </resources>
