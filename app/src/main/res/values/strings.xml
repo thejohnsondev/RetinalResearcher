@@ -5,11 +5,29 @@
 
     <!-- preview -->
     <string name="label_preview">Preview</string>
+    <string name="lens">LENS</string>
+    <string name="lens_mm">mm</string>
+    <string name="iso">ISO</string>
+    <string name="iso_divider">%d:%d</string>
+    <string name="resolution">RESOLUTION</string>
+    <string name="resolution_mp">MP</string>
+    <string name="aperture">APERTURE</string>
+    <string name="aperture_f">f/%s</string>
+    <string name="grid">GRID</string>
+    <string name="hdr">HDR</string>
+    <string name="torch">TORCH</string>
+    <string name="ois">OIS</string>
+    <string name="on">ON</string>
+    <string name="off">OFF</string>
+    <string name="image_size">IMAGE_SIZE</string>
+    <string name="image_size_divider">%dx%d</string>
 
     <!-- actions -->
     <string name="label_filter">Filter</string>
     <string name="label_contrast">Contrast</string>
     <string name="label_brightness">Brightness</string>
+    <string name="label_saturation">Saturation</string>
+    <string name="label_white_balance">White balance</string>
     <string name="label_rgb">RGB filter</string>
     <string name="label_gray_scale">Gray Scale</string>
 

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <dimen name="gap_10sp">10sp</dimen>
     <dimen name="gap_12sp">12sp</dimen>
+    <dimen name="gap_16sp">16sp</dimen>
     <dimen name="gap_20sp">20sp</dimen>
     <dimen name="gap_24sp">24sp</dimen>
     <dimen name="gap_28sp">28sp</dimen>
@@ -11,10 +13,14 @@
     <dimen name="gap_2dp">2dp</dimen>
     <dimen name="gap_4dp">4dp</dimen>
     <dimen name="gap_8dp">8dp</dimen>
+    <dimen name="gap_12dp">12dp</dimen>
     <dimen name="gap_16dp">16dp</dimen>
     <dimen name="gap_24dp">24dp</dimen>
     <dimen name="gap_32dp">32dp</dimen>
+    <dimen name="gap_48dp">48dp</dimen>
     <dimen name="gap_64dp">64dp</dimen>
+    <dimen name="gap_78dp">78dp</dimen>
     <dimen name="gap_128dp">128dp</dimen>
     <dimen name="gap_144dp">144dp</dimen>
+    <dimen name="gap256">256dp</dimen>
 </resources>

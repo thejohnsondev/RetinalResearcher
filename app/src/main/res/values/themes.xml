@@ -2,8 +2,8 @@
     <!-- Base application theme. -->
     <style name="Theme.RetinalResearcher" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/rr_blue</item>
-        <item name="colorPrimaryVariant">@color/rr_blue</item>
+        <item name="colorPrimary">@color/rr_gray_dark</item>
+        <item name="colorPrimaryVariant">@color/rr_gray_dark</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>

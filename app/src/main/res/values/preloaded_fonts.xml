@@ -2,6 +2,8 @@
 <resources>
     <array name="preloaded_fonts" translatable="false">
         <item>@font/alatsi</item>
+        <item>@font/athiti_extralight</item>
+        <item>@font/athiti_semibold</item>
         <item>@font/nunito_sans_bold</item>
     </array>
 </resources>

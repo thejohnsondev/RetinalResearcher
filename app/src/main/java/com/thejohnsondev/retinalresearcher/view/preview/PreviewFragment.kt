@@ -4,11 +4,16 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Context
 import android.graphics.Bitmap
+import android.hardware.camera2.CameraCharacteristics
 import android.os.Build
+import android.util.Range
 import android.view.View.GONE
 import android.view.View.VISIBLE
 import android.widget.SeekBar
-import androidx.camera.core.CameraSelector
+import androidx.annotation.RequiresApi
+import androidx.camera.camera2.interop.Camera2CameraInfo
+import androidx.camera.core.Camera
+import androidx.camera.core.CameraSelector.DEFAULT_BACK_CAMERA
 import androidx.camera.core.ImageAnalysis
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.core.content.ContextCompat
@@ -20,6 +25,7 @@ import com.thejohnsondev.retinalresearcher.databinding.FragmentPreviewBinding
 import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_BRIGHTNESS
 import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_CONTRAST
 import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_GRAY_SCALE
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BASE_IMAGE_SIZE
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BASE_PREVIEW_ROTATION
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BRIGHTNESS_MAX
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BRIGHTNESS_MIN
@@ -31,6 +37,7 @@ import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.REQUEST_CODE
 import com.thejohnsondev.retinalresearcher.util.Saved
 import com.thejohnsondev.retinalresearcher.util.Saving
 import com.thejohnsondev.retinalresearcher.util.Util.getAppComponent
+import com.thejohnsondev.retinalresearcher.util.Util.getResolution
 import com.thejohnsondev.retinalresearcher.util.YuvToRgbConverter
 import com.thejohnsondev.retinalresearcher.util.base.BaseFragment
 import jp.co.cyberagent.android.gpuimage.GPUImage
@@ -46,6 +53,7 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
     @Inject lateinit var imageAnalysis: ImageAnalysis
     private var cameraProvider: ProcessCameraProvider? = null
     private var currentBitmap: Bitmap? = null
+    private var camera: Camera? = null
     private var currentFilterOptionGroup: GPUImageFilterGroup? = null
     private val binding by viewBinding(FragmentPreviewBinding::bind)
     private val viewModel: PreviewViewModel by viewModels { getAppComponent().previewViewModelFactory() }
@@ -55,6 +63,7 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
         getAppComponent().inject(this)
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun bindViews() {
         requestPermissions(arrayOf(Manifest.permission.CAMERA), REQUEST_CODE_PERMISSION)
         initPreview()
@@ -135,8 +144,9 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
 
     override fun initListenersAndObservers() {
         initFilterOptionListener()
-        initCaptureBtnListener();
-        initSaveStateObserver();
+        initCaptureBtnListener()
+        initOtherOptionsListener()
+        initSaveStateObserver()
     }
 
     private fun initFilterOptionListener() {
@@ -147,8 +157,24 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
     }
 
     private fun initCaptureBtnListener() {
-        binding.actionsLayout.cameraShotBtn.setOnClickListener {
+        binding.cameraShotBtn.setOnClickListener {
             saveCapture()
+        }
+    }
+
+    private fun initOtherOptionsListener() {
+        binding.apply {
+            toggleTorch.setOnCheckedChangeListener { _, isSelected ->
+                camera?.let {
+                    if (it.cameraInfo.hasFlashUnit()) {
+                        it.cameraControl.enableTorch(isSelected)
+                    }
+                }
+            }
+            toggleGrid.setOnCheckedChangeListener { _, isSelected ->
+                val visibility = if (isSelected) VISIBLE else GONE
+                gridLayout.visibility = visibility
+            }
         }
     }
 
@@ -167,6 +193,7 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
         })
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     @SuppressLint("UnsafeOptInUsageError")
     private fun initPreview() {
         binding.realtimePreview.apply {
@@ -194,11 +221,37 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
                 binding.realtimePreview.setImage(bitmap)
             }
         })
-        cameraProvider?.bindToLifecycle(
+        camera = cameraProvider?.bindToLifecycle(
             viewLifecycleOwner,
-            CameraSelector.DEFAULT_BACK_CAMERA,
+            DEFAULT_BACK_CAMERA,
             imageAnalysis
         )
+        initCameraSpecs()
+    }
+
+    @SuppressLint("UnsafeOptInUsageError")
+    private fun initCameraSpecs() {
+        cameraProvider?.let { _ ->
+            camera?.let { camera ->
+                val camera2info = Camera2CameraInfo.from(camera.cameraInfo)
+
+                val isoRange = camera2info.getCameraCharacteristic(CameraCharacteristics.SENSOR_INFO_SENSITIVITY_RANGE) ?: Range(0,0)
+                val resolution = camera2info.getCameraCharacteristic(CameraCharacteristics.SENSOR_INFO_PIXEL_ARRAY_SIZE)?.getResolution()
+                val focusDistance = camera2info.getCameraCharacteristic(CameraCharacteristics.LENS_INFO_MINIMUM_FOCUS_DISTANCE)
+                val aperture = camera2info.getCameraCharacteristic(CameraCharacteristics.LENS_INFO_AVAILABLE_APERTURES)?.firstOrNull()
+                val oisEnabled = camera2info.getCameraCharacteristic(CameraCharacteristics.LENS_INFO_AVAILABLE_OPTICAL_STABILIZATION)?.first() != 0
+
+                binding.apply {
+                    tvIsoValue.text = getString(R.string.iso_divider, isoRange.lower, isoRange.upper)
+                    tvResolutionValue.text = resolution.toString()
+                    tvLensFocus.text = focusDistance.toString()
+                    tvApertureValue.text = getString(R.string.aperture_f, aperture.toString())
+                    oisEnabledBtn.isChecked = oisEnabled
+                    oisEnabledBtn.isClickable = false
+                    imageSizeValue.text = getString(R.string.image_size_divider, BASE_IMAGE_SIZE, BASE_IMAGE_SIZE)
+                }
+            }
+        }
     }
 
     private fun allocateBitmapIfNecessary(width: Int, height: Int): Bitmap {
@@ -208,6 +261,7 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
         return currentBitmap!!
     }
 
+    @RequiresApi(Build.VERSION_CODES.N)
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,

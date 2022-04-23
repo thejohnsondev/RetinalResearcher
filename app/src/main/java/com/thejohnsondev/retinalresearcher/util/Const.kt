@@ -16,6 +16,8 @@ object Const {
         const val BRIGHTNESS_MIN = 0
         const val SECOND_IN_MILLIS = 1000
         const val BITMAP_COMPRESS_QUALITY = 100
+        const val MEGAPIXEL = 1000000
+        const val ZERO = 0
     }
 
     object FilterOptions {

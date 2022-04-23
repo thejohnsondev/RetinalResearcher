@@ -21,10 +21,7 @@ import com.thejohnsondev.retinalresearcher.util.Saved
 import com.thejohnsondev.retinalresearcher.util.Saving
 import com.thejohnsondev.retinalresearcher.util.Util.rotate
 import jp.co.cyberagent.android.gpuimage.GPUImageView
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageBrightnessFilter
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageContrastFilter
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageFilter
-import jp.co.cyberagent.android.gpuimage.filter.GPUImageGrayscaleFilter
+import jp.co.cyberagent.android.gpuimage.filter.*
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -43,6 +40,9 @@ class PreviewViewModel @Inject constructor(
     private var contrastFilter = GPUImageContrastFilter(DEFAULT_CONTRAST_VALUE)
     private var brightnessFilter = GPUImageBrightnessFilter(DEFAULT_BRIGHTNESS_VALUE)
     private var grayscaleFilter = GPUImageGrayscaleFilter()
+    private var rgbFilter = GPUImageRGBFilter()
+    private val saturationFilter = GPUImageSaturationFilter()
+    private val whiteBalanceFilter = GPUImageWhiteBalanceFilter()
 
     private val filterList = mutableMapOf<String, GPUImageFilter>()
 

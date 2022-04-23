@@ -21,7 +21,14 @@
     <color name="rr_red_dark">#3C0E0E</color>
 
     <color name="rgb_red">#E45151</color>
-    <color name="rgb_green">#57D820</color>
-    <color name="rgb_blue">#2038B3</color>
+    <color name="rgb_green">#49F13B</color>
+    <color name="rgb_blue">#3B84F1</color>
+
+    <color name="rr_gray_dark">#202325</color>
+    <color name="rr_gray_normal">#2B2F32</color>
+    <color name="rr_gray_light">#383E42</color>
+
+    <color name="rr_slider_empty">#4A4D4F</color>
+    <color name="rr_slider_fill">#D1D1D1</color>
 
 </resources>
