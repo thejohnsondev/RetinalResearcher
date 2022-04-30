@@ -25,15 +25,26 @@ import com.thejohnsondev.retinalresearcher.databinding.FragmentPreviewBinding
 import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_BRIGHTNESS
 import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_CONTRAST
 import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_GRAY_SCALE
+import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_RGB
+import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_SATURATION
+import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_WHITE_BALANCE
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BASE_IMAGE_SIZE
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BASE_PREVIEW_ROTATION
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BRIGHTNESS_MAX
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BRIGHTNESS_MIN
-import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BRIGHTNESS_VALUE_DIVIDEND
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.CONTRAST_MAX
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.CONTRAST_MIN
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.CONTRAST_VALUE_DIVIDEND
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.DEFAULT_SEEK_BAR_VALUE
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.DEFAULT_WHITE_TEMPERATURE
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.REQUEST_CODE_PERMISSION
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.RGB_MAX
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.RGB_MIN
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.SATURATION_MAX
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.SATURATION_MIN
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.SEEK_BAR_VALUE_DIVIDEND
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.WHITE_TEMP_MAX
+import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.WHITE_TEMP_MIN
 import com.thejohnsondev.retinalresearcher.util.Saved
 import com.thejohnsondev.retinalresearcher.util.Saving
 import com.thejohnsondev.retinalresearcher.util.Util.getAppComponent
@@ -78,16 +89,34 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
 
     private fun initFilterValues() {
         binding.actionsLayout.apply {
-            contrastSeekBar.apply {
-                max = CONTRAST_MAX
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                contrastSeekBar.apply {
+                    max = CONTRAST_MAX
                     min = CONTRAST_MIN
                 }
-            }
-            brightnessSeekBar.apply {
-                max = BRIGHTNESS_MAX
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                brightnessSeekBar.apply {
+                    max = BRIGHTNESS_MAX
                     min = BRIGHTNESS_MIN
+                }
+                saturationSeekBar.apply {
+                    max = SATURATION_MAX
+                    min = SATURATION_MIN
+                }
+                whiteBalanceSeekBar.apply {
+                    max = WHITE_TEMP_MAX
+                    min = WHITE_TEMP_MIN
+                }
+                rgbRedSeekBar.apply {
+                    max = RGB_MAX
+                    min = RGB_MIN
+                }
+                rgbGreenSeekBar.apply {
+                    max = RGB_MAX
+                    min = RGB_MIN
+                }
+                rgbBlueSeekBar.apply {
+                    max = RGB_MAX
+                    min = RGB_MIN
                 }
             }
         }
@@ -110,7 +139,7 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
             brightnessSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
 
                 override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
-                    val brightnessValue = p1.toFloat().div(BRIGHTNESS_VALUE_DIVIDEND)
+                    val brightnessValue = p1.toFloat().div(SEEK_BAR_VALUE_DIVIDEND)
                     viewModel.setBrightnessValue(brightnessValue)
                 }
 
@@ -119,6 +148,65 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
                 override fun onStopTrackingTouch(p0: SeekBar?) {}
 
             })
+            saturationSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                    val saturationValue = p1.toFloat().div(SEEK_BAR_VALUE_DIVIDEND)
+                    viewModel.setSaturationValue(saturationValue)
+                }
+
+                override fun onStartTrackingTouch(p0: SeekBar?) {}
+
+                override fun onStopTrackingTouch(p0: SeekBar?) {}
+
+            })
+            whiteBalanceSeekBar.setOnSeekBarChangeListener(object :
+                SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                    viewModel.setWhiteBalanceValue(p1.toFloat())
+                }
+
+                override fun onStartTrackingTouch(p0: SeekBar?) {}
+
+                override fun onStopTrackingTouch(p0: SeekBar?) {}
+
+            })
+            rgbRedSeekBar.setOnSeekBarChangeListener(object :
+                SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                    val redValue = p1.toFloat().div(SEEK_BAR_VALUE_DIVIDEND)
+                    viewModel.setRedChannelValue(redValue)
+                }
+
+                override fun onStartTrackingTouch(p0: SeekBar?) {}
+
+                override fun onStopTrackingTouch(p0: SeekBar?) {}
+
+            })
+            rgbGreenSeekBar.setOnSeekBarChangeListener(object :
+                SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                    val greenValue = p1.toFloat().div(SEEK_BAR_VALUE_DIVIDEND)
+                    viewModel.setGreenChannelValue(greenValue)
+                }
+
+                override fun onStartTrackingTouch(p0: SeekBar?) {}
+
+                override fun onStopTrackingTouch(p0: SeekBar?) {}
+
+            })
+            rgbBlueSeekBar.setOnSeekBarChangeListener(object :
+                SeekBar.OnSeekBarChangeListener {
+                override fun onProgressChanged(p0: SeekBar?, p1: Int, p2: Boolean) {
+                    val blueValue = p1.toFloat().div(SEEK_BAR_VALUE_DIVIDEND)
+                    viewModel.setBlueChannelValue(blueValue)
+                }
+
+                override fun onStartTrackingTouch(p0: SeekBar?) {}
+
+                override fun onStopTrackingTouch(p0: SeekBar?) {}
+
+            })
+
         }
     }
 
@@ -132,6 +220,15 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
             }
             toggleGaryScale.setOnCheckedChangeListener { _, isSelected ->
                 addRemoveOption(isSelected, OPTION_GRAY_SCALE)
+            }
+            toggleSaturation.setOnCheckedChangeListener { _, isSelected ->
+                addRemoveOption(isSelected, OPTION_SATURATION)
+            }
+            toggleWhiteBalance.setOnCheckedChangeListener { _, isSelected ->
+                addRemoveOption(isSelected, OPTION_WHITE_BALANCE)
+            }
+            toggleRgb.setOnCheckedChangeListener { _, isSelected ->
+                addRemoveOption(isSelected, OPTION_RGB)
             }
         }
     }
@@ -227,6 +324,17 @@ class PreviewFragment : BaseFragment(R.layout.fragment_preview) {
             imageAnalysis
         )
         initCameraSpecs()
+        initDefaultSpinnersValues()
+    }
+
+    private fun initDefaultSpinnersValues() {
+        binding.actionsLayout.apply {
+            saturationSeekBar.progress = DEFAULT_SEEK_BAR_VALUE
+            whiteBalanceSeekBar.progress = DEFAULT_WHITE_TEMPERATURE
+            rgbRedSeekBar.progress = DEFAULT_SEEK_BAR_VALUE
+            rgbGreenSeekBar.progress = DEFAULT_SEEK_BAR_VALUE
+            rgbBlueSeekBar.progress = DEFAULT_SEEK_BAR_VALUE
+        }
     }
 
     @SuppressLint("UnsafeOptInUsageError")

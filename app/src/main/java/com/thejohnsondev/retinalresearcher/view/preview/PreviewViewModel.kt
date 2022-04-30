@@ -1,6 +1,5 @@
 package com.thejohnsondev.retinalresearcher.view.preview
 
-
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -11,9 +10,11 @@ import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_BRIGHTNESS
 import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_CONTRAST
 import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_EMPTY
 import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_GRAY_SCALE
+import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_RGB
+import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_SATURATION
+import com.thejohnsondev.retinalresearcher.util.Const.ArgKey.OPTION_WHITE_BALANCE
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BASE_IMAGE_SIZE
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.BASE_PREVIEW_ROTATION
-import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.DEFAULT_BRIGHTNESS_VALUE
 import com.thejohnsondev.retinalresearcher.util.Const.DefaultValues.DEFAULT_CONTRAST_VALUE
 import com.thejohnsondev.retinalresearcher.util.MediaManager
 import com.thejohnsondev.retinalresearcher.util.SaveState
@@ -22,7 +23,7 @@ import com.thejohnsondev.retinalresearcher.util.Saving
 import com.thejohnsondev.retinalresearcher.util.Util.rotate
 import jp.co.cyberagent.android.gpuimage.GPUImageView
 import jp.co.cyberagent.android.gpuimage.filter.*
-import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -38,7 +39,7 @@ class PreviewViewModel @Inject constructor(
 
     private var emptyFilter = GPUImageFilter()
     private var contrastFilter = GPUImageContrastFilter(DEFAULT_CONTRAST_VALUE)
-    private var brightnessFilter = GPUImageBrightnessFilter(DEFAULT_BRIGHTNESS_VALUE)
+    private var brightnessFilter = GPUImageBrightnessFilter()
     private var grayscaleFilter = GPUImageGrayscaleFilter()
     private var rgbFilter = GPUImageRGBFilter()
     private val saturationFilter = GPUImageSaturationFilter()
@@ -51,6 +52,9 @@ class PreviewViewModel @Inject constructor(
             OPTION_CONTRAST -> contrastFilter
             OPTION_BRIGHTNESS -> brightnessFilter
             OPTION_GRAY_SCALE -> grayscaleFilter
+            OPTION_SATURATION -> saturationFilter
+            OPTION_WHITE_BALANCE -> whiteBalanceFilter
+            OPTION_RGB -> rgbFilter
             else -> emptyFilter
         }
         filterList[name] = filerOption
@@ -81,8 +85,48 @@ class PreviewViewModel @Inject constructor(
         }
     }
 
+    fun setSaturationValue(value: Float) {
+        saturationFilter.setSaturation(value)
+        if (filterList.containsKey(OPTION_SATURATION)) {
+            filterList[OPTION_SATURATION] = saturationFilter
+            _currentFilterOptions.value = filterList
+        }
+    }
+
+    fun setWhiteBalanceValue(value: Float) {
+        whiteBalanceFilter.setTemperature(value)
+        if (filterList.containsKey(OPTION_WHITE_BALANCE)) {
+            filterList[OPTION_WHITE_BALANCE] = whiteBalanceFilter
+            _currentFilterOptions.value = filterList
+        }
+    }
+
+    fun setRedChannelValue(value: Float) {
+        rgbFilter.setRed(value)
+        if (filterList.containsKey(OPTION_RGB)) {
+            filterList[OPTION_RGB] = rgbFilter
+            _currentFilterOptions.value = filterList
+        }
+    }
+
+    fun setGreenChannelValue(value: Float) {
+        rgbFilter.setGreen(value)
+        if (filterList.containsKey(OPTION_RGB)) {
+            filterList[OPTION_RGB] = rgbFilter
+            _currentFilterOptions.value = filterList
+        }
+    }
+
+    fun setBlueChannelValue(value: Float) {
+        rgbFilter.setBlue(value)
+        if (filterList.containsKey(OPTION_RGB)) {
+            filterList[OPTION_RGB] = rgbFilter
+            _currentFilterOptions.value = filterList
+        }
+    }
+
     fun saveImage(realTimePreview: GPUImageView, context: Context, folderName: String) {
-        viewModelScope.launch(Dispatchers.IO) {
+        viewModelScope.launch(IO) {
             _saveState.postValue(Saving)
             val capture =
                 realTimePreview.capture(BASE_IMAGE_SIZE, BASE_IMAGE_SIZE).rotate(BASE_PREVIEW_ROTATION)
